@@ -1,10 +1,12 @@
+//this middleware is used from private routing for only authenticated users
+
 const jwt = require('jsonwebtoken');
 
 const config = require('config');
 const jwtSecret = config.get('jwtSecret');
 
 module.exports = function (req, res, next) {
-  //get token from header
+  //get token from header in postman
   const token = req.header('x-auth-token');
 
   //check if no token

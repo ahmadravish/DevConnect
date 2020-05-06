@@ -12,6 +12,9 @@ const jwtSecret = config.get('jwtSecret');
 const User = require('../../models/User');
 const auth = require('../../middleware/auth');
 
+//route  GET api/auth
+//get user info from db
+//acess: private
 router.get('/', auth, async (req, res) => {
   //2nd para auth is middleware to verify jwt
   try {
@@ -25,6 +28,9 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
+//rout: POST api/auth
+//post info for user login
+//acess: Public
 router.post(
   '/',
   [
@@ -40,7 +46,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() }); //400->bad request
     }
 
-    const { email, password } = req.body; //destructure from userschema or model
+    const { email, password } = req.body; //destructure from input
 
     try {
       //check if user doesn't exist
@@ -58,14 +64,14 @@ router.post(
           .json({ errors: [{ msg: 'Invalid credentials' }] });
       }
 
-      //check jwt valid or not
+      //chreate fresh token on login
       const payload = {
         user: {
           id: user.id,
         },
       };
       jwt.sign(payload, jwtSecret, { expiresIn: 360000 }, (err, token) => {
-        //check token after every expire for security
+        //fresh token on login
         if (err) throw err;
         res.json({ token });
         res.json(req.body);

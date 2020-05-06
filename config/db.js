@@ -10,6 +10,7 @@ const connectDB = async () => {
       useNewUrlParser: true, //to remove terminal warnings
       useUnifiedTopology: true,
       useCreateIndex: true,
+      useFindAndModify: false,
     });
     console.log('MongoDb connected..');
   } catch (err) {

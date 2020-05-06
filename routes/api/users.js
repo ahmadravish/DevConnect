@@ -1,5 +1,4 @@
 //this route is for register new user
-
 const express = require('express');
 const router = express.Router();
 const gravatar = require('gravatar');
@@ -12,6 +11,10 @@ const User = require('../../models/User'); //get userschema or model
 //get jwt secret token from config
 const config = require('config');
 const jwtSecret = config.get('jwtSecret');
+
+//route: POST api/users
+//post user details for reg.
+//acess:public
 router.post(
   '/',
   [
@@ -56,14 +59,13 @@ router.post(
 
       await user.save(); //save evrything(email,pass,name..) in db
 
-      //check jwt valid or not
+      //create first token on register
       const payload = {
         user: {
           id: user.id,
         },
       };
       jwt.sign(payload, jwtSecret, { expiresIn: 360000 }, (err, token) => {
-        //check token after every expire for security
         if (err) throw err;
         res.json({ token });
       });
