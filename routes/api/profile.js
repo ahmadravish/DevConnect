@@ -5,8 +5,10 @@ const mongoose = require('mongoose');
 const request = require('request');
 const config = require('config');
 const auth = require('../../middleware/auth');
+
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
+const Post = require('../../models/Post');
 
 //route: GET api/profile/me
 //Get current users profile
@@ -32,7 +34,7 @@ router.get('/me', auth, async (req, res) => {
   }
 });
 
-//route: POST api/profile/me
+//route: POST api/profile
 //create otherwise update user profile
 //acess: private
 router.post(
@@ -156,6 +158,9 @@ router.get('/user/:user_id', async (req, res) => {
 //acess:  Private
 router.delete('/', auth, async (req, res) => {
   try {
+    //remove user Posts
+    await Post.deleteMany({ user: req.user.id });
+
     //Remove Profile
     await Profile.findOneAndRemove({ user: req.user.id });
 

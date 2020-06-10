@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import axios from 'axios';
+//import axios from 'axios';
 
 const Register = ({ setAlert, register, isAuthenticated }) => {
   const [formData, setFormData] = useState({
